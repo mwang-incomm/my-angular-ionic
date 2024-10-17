@@ -9,14 +9,27 @@ import {
   NREnums,
 } from '@newrelic/newrelic-capacitor-plugin';
 
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
-  .catch((err) => console.log(err));
+function getResponse(url: string) {
+  return fetch(url).then((response) => {
+    return response.text();
+  });
+}
+
+Promise.all([
+  getResponse('https://www.google.com'),
+  getResponse('https://www.msn.com'),
+]).then(([data1, data2]) => {
+  console.log('bootrapping angular');
+
+  platformBrowserDynamic()
+    .bootstrapModule(AppModule)
+    .catch((err) => console.log(err));
+});
 
 var appToken;
 
 if (Capacitor.getPlatform() === 'ios') {
-  appToken = '<IOS-APP-TOKEN>';
+  appToken = '';
 } else {
   appToken = '<ANDROID-APP-TOKEN>';
 }
@@ -46,7 +59,7 @@ let agentConfig: AgentConfiguration = {
 
   // Optional:Specifies the log level. Omit this field for the default log level.
   // Options include: ERROR (least verbose), WARNING, INFO, VERBOSE, AUDIT (most verbose).
-  logLevel: NREnums.LogLevel.INFO,
+  logLevel: NREnums.LogLevel.AUDIT,
 
   // iOS Specific
   // Optional:Enable/Disable automatic instrumentation of WebViews
@@ -69,11 +82,11 @@ let agentConfig: AgentConfiguration = {
 
   // iOS Specific
   // Optional: Enable or disable Background Reporting.
-  backgroundReportingEnabled: true,
+  backgroundReportingEnabled: false,
 
   // iOS Specific
   // Optional: Enable or disable to use our new, more stable, event system for iOS agent.
-  newEventSystemEnabled: true,
+  newEventSystemEnabled: false,
 
   // Optional: Enable or disable distributed tracing.
   distributedTracingEnabled: true,
