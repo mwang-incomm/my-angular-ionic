@@ -9,22 +9,6 @@ import {
   NREnums,
 } from '@newrelic/newrelic-capacitor-plugin';
 
-function getResponse(url: string) {
-  return fetch(url).then((response) => {
-    return response.text();
-  });
-}
-
-Promise.all([
-  getResponse('https://www.google.com'),
-  getResponse('https://www.msn.com'),
-]).then(([data1, data2]) => {
-  console.log('bootrapping angular');
-
-  platformBrowserDynamic()
-    .bootstrapModule(AppModule)
-    .catch((err) => console.log(err));
-});
 
 var appToken;
 
@@ -96,3 +80,21 @@ NewRelicCapacitorPlugin.start({
   appKey: appToken,
   agentConfiguration: agentConfig,
 });
+
+function getResponse(url: string) {
+  return fetch(url).then((response) => {
+    return response.text();
+  });
+}
+
+Promise.all([
+  getResponse('https://www.google.com'),
+  getResponse('https://www.msn.com'),
+]).then(([data1, data2]) => {
+  console.log('bootrapping angular');
+
+  platformBrowserDynamic()
+    .bootstrapModule(AppModule)
+    .catch((err) => console.log(err));
+});
+
